@@ -1,0 +1,13 @@
+{
+    "runtime": "nodejs4.3",
+    "handler": "cost_metrics.handler",
+    "description": "A Lambda function to process AWS cost metrics and send to elasticsearch",
+    "timeout": 10,
+    "schedule": "rate(1 hour)",
+    "cloudwatch_rule": {
+        "endpoint": 0,
+        "region": 0,
+        "bucket": "my-billing-s3-bucket",
+        "role_arn": "arn:aws:iam:1234567890:role/mybillingaccountrole"
+    }
+}

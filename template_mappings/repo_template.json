@@ -1,0 +1,13 @@
+{
+    "template": "repo-*",
+    "mappings": {
+        "_default_": {
+            "properties": {
+                "Type": {
+                    "index": "not_analyzed",
+                    "type": "string"
+                }
+            }
+        }
+    }
+}

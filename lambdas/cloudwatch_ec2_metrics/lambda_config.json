@@ -1,0 +1,23 @@
+{
+    "runtime": "nodejs4.3",
+    "handler": "cloudwatch_ec2_metrics.handler",
+    "description": "A Lambda function to process cloudwatch ec2 metrics and send to elasticsearch",
+    "timeout": 15,
+    "schedule": "rate(5 minutes)",
+    "cloudwatch_rule": {
+        "metrics": [
+            "CPUUtilization",
+            "DiskSpaceUtilization",
+            "MemoryUtilization",
+            "StatusCheckFailed",
+            "NetworkIn",
+            "NetworkOut",
+            "DiskReadBytes",
+            "DiskWriteBytes"
+        ],
+        "aggtime": 5,
+        "endpoint": 0,
+        "measurement": "Average",
+        "region": 0
+    }
+}

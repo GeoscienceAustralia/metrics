@@ -1,0 +1,16 @@
+{
+    "runtime": "python2.7",
+    "handler": "cloudwatch_other_metrics.lambda_handler",
+    "description": "A Lambda function to collect cloudwatch metrics for services other than ec2",
+    "timeout": 15,
+    "schedule": "rate(5 minutes)",
+    "cloudwatch_rule": {
+        "endpoint": 0,
+        "measurement": "Average",
+        "metrics": {
+            "AWS/EBS": ["VolumeReadBytes", "VolumeWriteBytes"],
+            "AWS/RDS": ["CPUUtilization", "FreeStorageSpace", "FreeableMemory"],
+            "AWS/CloudFront": ["Requests", "BytesDownloaded", "BytesUploaded", "TotalErrorRate", "4xxErrorRate", "5xxErrorRate"]
+        }
+    }
+}

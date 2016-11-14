@@ -1,0 +1,8 @@
+{
+    "runtime": "python2.7",
+    "handler": "eck_curator.lambda_handler",
+    "description": "A Lambda function to clean up old elasticsearch indices",
+    "timeout": 15,
+    "schedule": "rate(1 day)",
+    "cloudwatch_rule": {"domainname": 0}
+}

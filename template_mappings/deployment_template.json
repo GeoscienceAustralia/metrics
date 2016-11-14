@@ -1,0 +1,21 @@
+{
+    "template": "deployment-*",
+    "mappings": {
+        "_default_": {
+            "properties": {
+                "Application": {
+                    "index": "not_analyzed",
+                    "type": "string"
+                },
+                "Environment": {
+                    "index": "not_analyzed",
+                    "type": "string"
+                },
+                "deployment": {
+                    "index": "not_analyzed",
+                    "type": "long"
+                }
+            }
+        }
+    }
+}

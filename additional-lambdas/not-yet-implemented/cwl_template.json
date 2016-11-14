@@ -1,0 +1,25 @@
+{
+   "template": "cwl-*",
+   "mappings": {
+     "_default_": {
+       "properties": {
+         "instance": {
+           "index": "not_analyzed",
+           "type": "string"
+         },
+         "instanceName": {
+           "index": "not_analyzed",
+           "type": "string"
+         },
+         "logfile": {
+           "index": "not_analyzed",
+           "type": "string"
+         },
+         "account": {
+           "index": "not_analyzed",
+           "type": "string"
+         }
+       }
+     }
+   }
+}

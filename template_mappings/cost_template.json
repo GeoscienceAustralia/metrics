@@ -1,0 +1,17 @@
+{
+    "template": "cost-*",
+    "mappings": {
+        "_default_": {
+            "properties": {
+                "AccountId": {
+                    "index": "not_analyzed",
+                    "type": "string"
+                },
+                "AccountName": {
+                    "index": "not_analyzed",
+                    "type": "string"
+                }
+            }
+        }
+    }
+}
