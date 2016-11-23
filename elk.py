@@ -131,6 +131,38 @@ def configure_kibana(endpoint):
     print('Kibana has been configured!')
 
 
+def delete_lambda_functions(name, boto_session):
+    """
+    Deletes lambda functions and cloudwatch rules in ./lambdas
+    """
+    for file in os.listdir('./lambdas'):
+        del_name = '{0}_{1}'.format(name, file)
+
+        # Delete Cloudwatch objects
+        print('Deleting Cloudwatch rule: {0}'.format(del_name))
+        try:
+            boto_cloudwatch = boto_session.client('events')
+            boto_cloudwatch.remove_targets(Rule=del_name, Ids=['0'])
+            boto_cloudwatch.delete_rule(Name=del_name)
+        except Exception as e:
+            if 'ResourceNotFoundException' not in str(e):
+                print(e)
+            else:
+                print('Cloudwatch rule {0} did not exist, going ahead with other deletions'.format(del_name))
+
+        # Delete Lambda objects
+        print('Deleting Lambda function: {0}'.format(del_name))
+        try:
+            boto_lambda = boto_session.client('lambda')
+            boto_lambda.delete_function(FunctionName=del_name)
+        except Exception as e:
+            if 'ResourceNotFoundException' not in str(e):
+                print(e)
+            else:
+                print('Lambda function {0} did not exist, going ahead with other deletions'.format(del_name))
+
+
+
 def create_lambda_functions(esname, endpoint, boto_session, role_arn):
     """
     Creates lambda functions and cloudwatch schedules to run those functions from directories in ./lambdas
@@ -306,31 +338,7 @@ def delete_elk(name, boto_session):
     Deletes an elk environment with the specified name
 
     """
-    for file in os.listdir('./lambdas'):
-        del_name = '{0}_{1}'.format(name, file)
-
-        # Delete Cloudwatch objects
-        print('Deleting Cloudwatch rule: {0}'.format(del_name))
-        try:
-            boto_cloudwatch = boto_session.client('events')
-            boto_cloudwatch.remove_targets(Rule=del_name, Ids=['0'])
-            boto_cloudwatch.delete_rule(Name=del_name)
-        except Exception as e:
-            if 'ResourceNotFoundException' not in str(e):
-                print(e)
-            else:
-                print('Cloudwatch rule {0} did not exist, going ahead with other deletions'.format(del_name))
-
-        # Delete Lambda objects
-        print('Deleting Lambda function: {0}'.format(del_name))
-        try:
-            boto_lambda = boto_session.client('lambda')
-            boto_lambda.delete_function(FunctionName=del_name)
-        except Exception as e:
-            if 'ResourceNotFoundException' not in str(e):
-                print(e)
-            else:
-                print('Lambda function {0} did not exist, going ahead with other deletions'.format(del_name))
+    delete_lambda_functions(name, boto_session)
 
     # Delete IAM objects
     role_name = '{0}_processing_lambda_role'.format(name)
@@ -393,6 +401,9 @@ def parse_args():
                         default='create',
                         help='The action to perform. options: create, or delete. Delete will delete all elk '
                              'objects with the provided name (-n). default: create')
+    parser.add_argument('-r', '--role',
+                        default='NOROLESPECIFIED',
+                        help='ARN of role to be used for lambda functions')
 
     return parser.parse_args()
 
@@ -432,7 +443,15 @@ def main():
         print('Kibana Endpoint: \'https://{0}/_plugin/kibana/\''.format(endpoint))
         print('elk {0} has been fully created'.format(domainname))
     elif action in ['UPDATE']:
-        print('update placeholder hit.... No code to run yet! :)')
+        es = session.client('es')
+        es_status = es.describe_elasticsearch_domain(DomainName=domainname)
+        endpoint = es_status['DomainStatus']['Endpoint']
+
+        if args.role == 'NOROLESPECIFIED':
+            raise RuntimeError("Role ARN -r/--role must be specified to update lambdas")
+
+        delete_lambda_functions(domainname, session)
+        create_lambda_functions(domainname, endpoint, session, args.role)
     elif action in ['DELETE']:
         user_input = input('Are you sure you want to delete the ELK stack with name {0}? '.format(domainname))
         if user_input.upper() in ['YES', 'Y']:
