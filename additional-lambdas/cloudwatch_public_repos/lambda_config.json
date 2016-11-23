@@ -1,0 +1,12 @@
+{
+    "runtime": "nodejs4.3",
+    "handler": "cloudwatch_public_repos.lambda_handler",
+    "description": "Sends github repo count to elastic search",
+    "timeout": 15,
+    "schedule": "rate(1 day)",
+    "cloudwatch_rule": {
+        "endpoint": 0,
+        "index_prefix": "repo",
+        "type": "PublicRepos"
+    }
+}
