@@ -2,7 +2,8 @@ var AWS = require('aws-sdk');
 var https = require('https');
 var crypto = require('crypto');
 
-
+/* Add comments
+ */
 exports.handler = function(input, context) {
     var latestobj = [];
     var elk_endpoint = new AWS.Endpoint(input.endpoint);
