@@ -48,7 +48,6 @@ function find_file_in_s3(s3) {
     s3.listObjects({Bucket: bucket}, function(err, data) {
       if (err) console.log(err, err.stack); // an error occurred
       else {
-          timestamp = new Date();
           var re = new RegExp("-aws-billing-csv-");
           for (var i = 0; i < data.Contents.length; i++) {
             var name = data.Contents[i].Key;
