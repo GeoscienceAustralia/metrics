@@ -44,7 +44,6 @@ exports.handler = function(input, context) {
  * Find the last modified cost line item file and get metrics from s3 file.  Generate JSON output and then post the metrics to ElasticSearch
  */
 function find_file_in_s3(s3) {
-
     s3.listObjects({Bucket: bucket}, function(err, data) {
       if (err) console.log(err, err.stack); // an error occurred
       else {
@@ -57,7 +56,6 @@ function find_file_in_s3(s3) {
                 if (new Date(latestObj[0].LastModified).getTime() < new Date(data.Contents[i].LastModified).getTime()){
                     latestObj.pop();
                     latestObj.push(data.Contents[i]);
-                    // console.log("latest: " + JSON.stringify(latestObj));
                 }
             }
         }
@@ -146,11 +144,9 @@ function postToES(json_str, endpoint, region, context) {
             respBody += chunk;
         });
         httpResp.on('end', function (chunk) {
-            //console.log('Response: ' + respBody);
             context.succeed('sent json: ' + json_str);
         });
     }, function(err) {
-        //console.log('Error: ' + err);
         context.fail('failed with error ' + err);
     });
     }
