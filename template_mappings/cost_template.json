@@ -10,6 +10,22 @@
                 "AccountName": {
                     "index": "not_analyzed",
                     "type": "string"
+                },
+                "ProductCode": {
+                    "index": "not_analyzed",
+                    "type": "string"
+                },
+                "ProductName": {
+                    "index": "not_analyzed",
+                    "type": "string"
+                },
+                "UsageType": {
+                    "index": "not_analyzed",
+                    "type": "string"
+                },
+                "LineItemCost": {
+                    "index": "not_analyzed",
+                    "type": "long"
                 }
             }
         }
