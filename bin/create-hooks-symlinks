@@ -1,5 +1,5 @@
 #!/bin/bash
-HOOK_NAMES="commit-msg"
+HOOK_NAMES="pre-commit"
 # assuming the script is in a bin directory, one level into the repo
 HOOK_DIR=$(git rev-parse --show-toplevel)/.git/hooks
 
