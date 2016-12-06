@@ -1,20 +1,10 @@
-!/bin/bash
-files=$(git diff --cached --name-only | grep '\.jsx\?$')
+#!/bin/bash
 
-# Prevent ESLint help message if no files matched
-if [[ $files = "" ]] ; then
-  exit 0
-fi
-
-failed=0
-for file in ${files}; do
-  git show :$file | eslint $file
-  if [[ $? != 0 ]] ; then
-    failed=1
+for file in $(git diff --name-only | grep -E '\.(js|jsx|json)$')
+do
+  git show ":$file" | eslint --stdin --stdin-filename "$file" # we only want to lint the staged changes, not any un-staged changes
+  if [ $? -ne 0 ]; then
+    echo "ESLint failed on staged file '$file'. Please check your code and try again. You can run ESLint manually via eslint."
+    exit 1 # exit with failure status
   fi
-done;
-
-if [[ $failed != 0 ]] ; then
-  echo "🚫🚫🚫 ESLint failed, git commit denied!"
-  exit $failed
-fi
+done
