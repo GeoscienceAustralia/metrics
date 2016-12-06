@@ -1,4 +1,7 @@
 #!/bin/bash
+
+#Based on http://stackoverflow.com/questions/3462955/putting-git-hooks-into-repository/3464399#3464399 
+
 HOOK_NAMES="pre-commit"
 # assuming the script is in a bin directory, one level into the repo
 HOOK_DIR=$(git rev-parse --show-toplevel)/.git/hooks
