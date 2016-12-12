@@ -1,0 +1,5 @@
+#Ignore all files that are not .js or .json
+LICENSE
+**/*.md
+**/*.py
+**/*.cfg
