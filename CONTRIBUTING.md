@@ -5,6 +5,7 @@
 This repo uses [ESLint](http://eslint.org/) to enforce our style guide for the JavaScript and JSON files.
 
 To configure ESLint:
+
 1. Install an ESLint extension for your preffered code editor
 2. Install ESLint globally using `npm install -g eslint`
 3. Install ESLint JSON plugin `npm install -g eslint-plugin-json`
