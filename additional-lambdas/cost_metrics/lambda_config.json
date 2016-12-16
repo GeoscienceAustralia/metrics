@@ -2,7 +2,7 @@
     "runtime": "nodejs4.3",
     "handler": "cost_metrics.handler",
     "description": "A Lambda function to process AWS cost metrics and send to elasticsearch",
-    "timeout": 10,
+    "timeout": 15,
     "schedule": "rate(1 hour)",
     "cloudwatch_rule": {
         "endpoint": 0,
